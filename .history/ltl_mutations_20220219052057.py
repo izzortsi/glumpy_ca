@@ -275,7 +275,7 @@ render['pingpong'] = pingpong
 
 framebuffer = gloo.FrameBuffer(color=compute["texture"],
                                depth=gloo.DepthBuffer(w, h))
-app.run(framerate=60)
+app.run(framerate=0)
 
 # -----------------------------------------------------------------------------
 # Copyright (c) 2009-2016 Nicolas P. Rougier. All rights reserved.

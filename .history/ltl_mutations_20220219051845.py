@@ -99,8 +99,8 @@ void main(void)
     }
 }
 """
-WIDTH= 2048
-HEIGHT = 1024
+WIDTH= 1024
+HEIGHT = 512
 MUTATION_STEP = 0.01
 window = app.Window(width=WIDTH, height=HEIGHT)
 
@@ -275,7 +275,7 @@ render['pingpong'] = pingpong
 
 framebuffer = gloo.FrameBuffer(color=compute["texture"],
                                depth=gloo.DepthBuffer(w, h))
-app.run(framerate=60)
+app.run(framerate=0)
 
 # -----------------------------------------------------------------------------
 # Copyright (c) 2009-2016 Nicolas P. Rougier. All rights reserved.

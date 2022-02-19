@@ -99,8 +99,8 @@ void main(void)
     }
 }
 """
-WIDTH= 2048
-HEIGHT = 1024
+WIDTH= 1024
+HEIGHT = 512
 MUTATION_STEP = 0.01
 window = app.Window(width=WIDTH, height=HEIGHT)
 
@@ -135,7 +135,7 @@ def on_character(character):
         Z[...] = np.random.rand(h, w, 4,)
         compute["texture"] = Z
     if character == "R":
-        params = np.random.rand(3)
+        params = np.random.rand(4)
         params = params.astype(np.float32)
         params.sort()
         compute["params"] = params
@@ -150,7 +150,7 @@ def on_character(character):
         params = params.astype(np.float32) * MUTATION_STEP * np.random.randint(-1, 1)
         params += compute["params"]
         params = abs(params)
-        params.sort()
+        # params.sort()
         compute["params"] = params
         # compute["params"] = abs(compute["params"])
         # Z = np.zeros((h, w, 4), dtype=np.float32)
@@ -275,7 +275,7 @@ render['pingpong'] = pingpong
 
 framebuffer = gloo.FrameBuffer(color=compute["texture"],
                                depth=gloo.DepthBuffer(w, h))
-app.run(framerate=60)
+app.run(framerate=0)
 
 # -----------------------------------------------------------------------------
 # Copyright (c) 2009-2016 Nicolas P. Rougier. All rights reserved.

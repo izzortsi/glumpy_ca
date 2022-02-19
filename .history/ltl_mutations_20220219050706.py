@@ -50,7 +50,7 @@ void main()
 
 compute_fragment = """
 uniform int pingpong;
-uniform vec3 params;
+uniform vec4 params;
 uniform vec3 radii;
 uniform sampler2D texture;
 uniform float dx;          // horizontal distance between texels
@@ -77,18 +77,18 @@ void main(void)
 
     old_state = texture2D(texture, p)[pingpong];
 
-    count = adj_count(radii[0], p);
+    count = adj_count(5.0, p);
 
     new_state = old_state;
     
-    if( count >= 0 && count < 121.0*params[0] )
+    if( count >= 0 && count < 34.0 )
+        new_state = 0.0;
+
+    else if( count >= 58.0 && count <= 121.0)
         new_state = 0.0;
     
-    else if( (count >= 121.0*params[0]) && (count <= 121.0*params[1]) )
+    else if( (count >= 34.0) && (count <= 45.0) )
         new_state = 1.0;
-
-    else if( count >= 121.0*params[2] && count <= 121.0)
-        new_state = 0.0;
     
     if( pingpong == 0 ) {
         gl_FragColor[1] = new_state;
@@ -99,8 +99,8 @@ void main(void)
     }
 }
 """
-WIDTH= 2048
-HEIGHT = 1024
+WIDTH= 1024
+HEIGHT = 512
 MUTATION_STEP = 0.01
 window = app.Window(width=WIDTH, height=HEIGHT)
 
@@ -135,7 +135,7 @@ def on_character(character):
         Z[...] = np.random.rand(h, w, 4,)
         compute["texture"] = Z
     if character == "R":
-        params = np.random.rand(3)
+        params = np.random.rand(4)
         params = params.astype(np.float32)
         params.sort()
         compute["params"] = params
@@ -146,11 +146,11 @@ def on_character(character):
         # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters randomized to: {compute["params"]}')
     if character == "A":
-        params = np.random.rand(3)
+        params = np.random.rand(4)
         params = params.astype(np.float32) * MUTATION_STEP * np.random.randint(-1, 1)
         params += compute["params"]
         params = abs(params)
-        params.sort()
+        # params.sort()
         compute["params"] = params
         # compute["params"] = abs(compute["params"])
         # Z = np.zeros((h, w, 4), dtype=np.float32)
@@ -202,23 +202,23 @@ def on_character(character):
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')       
-    # if character == "f":
-    #     # params.sort()
-    #     params = compute["params"]
-    #     params[3] += MUTATION_STEP
-    #     compute["params"] = params
+    if character == "f":
+        # params.sort()
+        params = compute["params"]
+        params[3] += MUTATION_STEP
+        compute["params"] = params
 
-    #     print(f'Parameters mutated to: {compute["params"]}')                    
-    # if character == "v":
-    #     # params.sort()
-    #     params = compute["params"]
-    #     params[3] -= MUTATION_STEP
-    #     compute["params"] = params
+        print(f'Parameters mutated to: {compute["params"]}')                    
+    if character == "v":
+        # params.sort()
+        params = compute["params"]
+        params[3] -= MUTATION_STEP
+        compute["params"] = params
 
-    #     print(f'Parameters mutated to: {compute["params"]}')                                 
+        print(f'Parameters mutated to: {compute["params"]}')                                 
 
     if character == "C":
-        compute['params'] = np.array([0.2801, 0.3719, 0.4793 ], dtype=np.float32)        # print(f'Parameters mutated to: {compute["params"]}')
+        compute['params'] = np.array([0.2801, 0.4793, 0.3719, 1.0], dtype=np.float32)        # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters resetted to: {compute["params"]}')           
     if character == "p":
         MUTATION_STEP *= 2
@@ -261,7 +261,7 @@ compute["texcoord"] = [(0, 0), (0, 1), (1, 0), (1, 1)]
 compute['dx'] = 1.0 / w
 compute['dy'] = 1.0 / h
 compute['pingpong'] = pingpong
-compute['params'] = np.array([0.2801, 0.3719, 0.4793 ], dtype=np.float32)
+compute['params'] = np.array([0.2801, 0.4793, 0.3719, 1.0], dtype=np.float32)
 compute['radii'] = np.array([5.0, 3.0, 1.0], dtype=np.float32)
 
 
@@ -275,7 +275,7 @@ render['pingpong'] = pingpong
 
 framebuffer = gloo.FrameBuffer(color=compute["texture"],
                                depth=gloo.DepthBuffer(w, h))
-app.run(framerate=60)
+app.run(framerate=0)
 
 # -----------------------------------------------------------------------------
 # Copyright (c) 2009-2016 Nicolas P. Rougier. All rights reserved.

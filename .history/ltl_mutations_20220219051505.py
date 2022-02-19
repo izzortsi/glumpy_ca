@@ -51,7 +51,7 @@ void main()
 compute_fragment = """
 uniform int pingpong;
 uniform vec3 params;
-uniform vec3 radii;
+uniform vec2 radii;
 uniform sampler2D texture;
 uniform float dx;          // horizontal distance between texels
 uniform float dy;          // vertical distance between texels
@@ -99,8 +99,8 @@ void main(void)
     }
 }
 """
-WIDTH= 2048
-HEIGHT = 1024
+WIDTH= 1024
+HEIGHT = 512
 MUTATION_STEP = 0.01
 window = app.Window(width=WIDTH, height=HEIGHT)
 
@@ -135,7 +135,7 @@ def on_character(character):
         Z[...] = np.random.rand(h, w, 4,)
         compute["texture"] = Z
     if character == "R":
-        params = np.random.rand(3)
+        params = np.random.rand(4)
         params = params.astype(np.float32)
         params.sort()
         compute["params"] = params
@@ -146,11 +146,11 @@ def on_character(character):
         # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters randomized to: {compute["params"]}')
     if character == "A":
-        params = np.random.rand(3)
+        params = np.random.rand(4)
         params = params.astype(np.float32) * MUTATION_STEP * np.random.randint(-1, 1)
         params += compute["params"]
         params = abs(params)
-        params.sort()
+        # params.sort()
         compute["params"] = params
         # compute["params"] = abs(compute["params"])
         # Z = np.zeros((h, w, 4), dtype=np.float32)
@@ -202,20 +202,20 @@ def on_character(character):
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')       
-    # if character == "f":
-    #     # params.sort()
-    #     params = compute["params"]
-    #     params[3] += MUTATION_STEP
-    #     compute["params"] = params
+    if character == "f":
+        # params.sort()
+        params = compute["params"]
+        params[3] += MUTATION_STEP
+        compute["params"] = params
 
-    #     print(f'Parameters mutated to: {compute["params"]}')                    
-    # if character == "v":
-    #     # params.sort()
-    #     params = compute["params"]
-    #     params[3] -= MUTATION_STEP
-    #     compute["params"] = params
+        print(f'Parameters mutated to: {compute["params"]}')                    
+    if character == "v":
+        # params.sort()
+        params = compute["params"]
+        params[3] -= MUTATION_STEP
+        compute["params"] = params
 
-    #     print(f'Parameters mutated to: {compute["params"]}')                                 
+        print(f'Parameters mutated to: {compute["params"]}')                                 
 
     if character == "C":
         compute['params'] = np.array([0.2801, 0.3719, 0.4793 ], dtype=np.float32)        # print(f'Parameters mutated to: {compute["params"]}')
@@ -275,7 +275,7 @@ render['pingpong'] = pingpong
 
 framebuffer = gloo.FrameBuffer(color=compute["texture"],
                                depth=gloo.DepthBuffer(w, h))
-app.run(framerate=60)
+app.run(framerate=0)
 
 # -----------------------------------------------------------------------------
 # Copyright (c) 2009-2016 Nicolas P. Rougier. All rights reserved.
