@@ -115,15 +115,15 @@ def on_draw(dt):
     render.draw(gl.GL_TRIANGLE_STRIP)
 
 @window.event
-def on_key_press(character, mod):
+def on_character(character):
     global MUTATION_STEP
-    if character == app.window.key.S and mod == app.window.key.MOD_SHIFT:
+    if character == "S":
         print('Character entered (chracter: %s)'% character)
         # Z = np.zeros((h, w, 4), dtype=np.float32)
         # Z[...] = np.random.randn(0, 1, (h, w, 4))
         Z[...] = np.random.rand(h, w, 4,)
         compute["texture"] = Z
-    if character == app.window.key.R and mod == app.window.key.MOD_SHIFT:
+    if character == "R":
         params = np.random.rand(3)
         params = params.astype(np.float32)
         params.sort()
@@ -134,7 +134,7 @@ def on_key_press(character, mod):
         compute["texture"] = Z       
         # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters randomized to: {compute["params"]}')
-    if character == app.window.key.A and mod == app.window.key.MOD_SHIFT:
+    if character == "A":
         params = np.random.rand(3)
         params = params.astype(np.float32) * MUTATION_STEP * np.random.randint(-1, 1)
         params += compute["params"]
@@ -148,14 +148,14 @@ def on_key_press(character, mod):
         compute["texture"] = Z       
         # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters mutated to: {compute["params"]}')  
-    if character == app.window.key.A:
+    if character == "a":
         # params.sort()
         params = compute["params"]
         params[0] += MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')                    
-    if character ==  app.window.key.Z:
+    if character == "z":
         # params.sort()
         params = compute["params"]
         params[0] -= MUTATION_STEP
@@ -163,28 +163,28 @@ def on_key_press(character, mod):
 
         print(f'Parameters mutated to: {compute["params"]}')
     
-    if character ==  app.window.key.S:
+    if character == "s":
         # params.sort()
         params = compute["params"]
         params[1] += MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')                    
-    if character ==  app.window.key.X:
+    if character == "x":
         # params.sort()
         params = compute["params"]
         params[1] -= MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')    
-    if character ==  app.window.key.D:
+    if character == "d":
         # params.sort()
         params = compute["params"]
         params[2] += MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')                    
-    if character == app.window.key.C:
+    if character == "c":
         # params.sort()
         params = compute["params"]
         params[2] -= MUTATION_STEP
@@ -206,15 +206,35 @@ def on_key_press(character, mod):
 
     #     print(f'Parameters mutated to: {compute["params"]}')                                 
 
-    if character ==  app.window.key.C and mod == app.window.key.MOD_SHIFT:
+    if character == "C":
         compute['params'] = np.array([0.2801, 0.3719, 0.4793 ], dtype=np.float32)        # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters resetted to: {compute["params"]}')           
-    if character ==  app.window.key.P:
+    if character == "p":
         MUTATION_STEP *= 2
         print(f'Mutation step changed to: {MUTATION_STEP}')                    
-    if character ==  app.window.key.L:
+    if character == "l":
         MUTATION_STEP /= 2
         print(f'Mutation step changed to: {MUTATION_STEP}')                    
+
+@window.event
+def on_key_press(symbol, modifiers):
+    if symbol == app.window.key.S:
+        # Z = np.zeros((h, w, 4), dtype=np.float32)
+        # Z[...] = np.random.randn(0, 1, (h, w, 4))
+        Z[...] = np.random.rand(h, w, 4,)
+        compute["texture"] = Z
+    print('Key pressed (symbol=%s, modifiers=%s)'% (symbol,modifiers))
+
+@window.event
+def on_mouse_press(x, y, button):
+    print('Mouse button pressed (x=%.1f, y=%.1f, button=%d)' % (x,y,button))
+
+@window.event
+def on_mouse_drag(x, y, dx, dy, button):
+    print('Mouse drag (x=%.1f, y=%.1f, dx=%.1f, dy=%.1f, button=%d)' % (x,y,dx,dy,button))
+
+
+
 
 w, h = WIDTH,HEIGHT
 Z = np.zeros((h, w, 4), dtype=np.float32)
