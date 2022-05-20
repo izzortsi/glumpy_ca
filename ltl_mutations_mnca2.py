@@ -1,14 +1,3 @@
-# -----------------------------------------------------------------------------
-# Copyright (c) 2009-2016 Nicolas P. Rougier. All rights reserved.
-# Distributed under the (new) BSD License.
-# -----------------------------------------------------------------------------
-# Author:   Nicolas P .Rougier
-# Date:     06/03/2014
-# Abstract: GPU computing using the framebuffer
-# Keywords: framebuffer, GPU computing, cellular automata
-# -----------------------------------------------------------------------------
-
-
 
 import numpy as np
 from glumpy import app, gl, glm, gloo
@@ -235,15 +224,6 @@ def on_key_press(symbol, modifiers):
         Z[...] = np.random.rand(h, w, 4,)
         compute["texture"] = Z
     print('Key pressed (symbol=%s, modifiers=%s)'% (symbol,modifiers))
-
-@window.event
-def on_character(character):
-    if symbol == app.window.key.C:
-        # Z = np.zeros((h, w, 4), dtype=np.float32)
-        # Z[...] = np.random.randn(0, 1, (h, w, 4))
-        Z[...] = np.random.rand(h, w, 4,)
-        compute["texture"] = Z    
-    print('Character entered (chracter: %s)'% character)
 
 @window.event
 def on_mouse_press(x, y, button):

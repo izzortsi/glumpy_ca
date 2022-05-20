@@ -1,15 +1,3 @@
-# -----------------------------------------------------------------------------
-# Copyright (c) 2009-2016 Nicolas P. Rougier. All rights reserved.
-# Distributed under the (new) BSD License.
-# -----------------------------------------------------------------------------
-# Author:   Nicolas P .Rougier
-# Date:     06/03/2014
-# Abstract: GPU computing using the framebuffer
-# Keywords: framebuffer, GPU computing, cellular automata
-# -----------------------------------------------------------------------------
-
-
-
 import numpy as np
 from glumpy import app, gl, glm, gloo
 
@@ -126,15 +114,15 @@ def on_draw(dt):
     render.draw(gl.GL_TRIANGLE_STRIP)
 
 @window.event
-def on_character(character):
+def on_key_press(character, mod):
     global MUTATION_STEP
-    if character == "S":
+    if character == app.window.key.S and mod == app.window.key.MOD_SHIFT:
         print('Character entered (chracter: %s)'% character)
         # Z = np.zeros((h, w, 4), dtype=np.float32)
         # Z[...] = np.random.randn(0, 1, (h, w, 4))
         Z[...] = np.random.rand(h, w, 4,)
         compute["texture"] = Z
-    if character == "R":
+    if character == app.window.key.R and mod == app.window.key.MOD_SHIFT:
         params = np.random.rand(3)
         params = params.astype(np.float32)
         params.sort()
@@ -145,7 +133,7 @@ def on_character(character):
         compute["texture"] = Z       
         # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters randomized to: {compute["params"]}')
-    if character == "A":
+    if character == app.window.key.A and mod == app.window.key.MOD_SHIFT:
         params = np.random.rand(3)
         params = params.astype(np.float32) * MUTATION_STEP * np.random.randint(-1, 1)
         params += compute["params"]
@@ -159,14 +147,14 @@ def on_character(character):
         compute["texture"] = Z       
         # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters mutated to: {compute["params"]}')  
-    if character == "a":
+    if character == app.window.key.A:
         # params.sort()
         params = compute["params"]
         params[0] += MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')                    
-    if character == "z":
+    if character ==  app.window.key.Z:
         # params.sort()
         params = compute["params"]
         params[0] -= MUTATION_STEP
@@ -174,28 +162,28 @@ def on_character(character):
 
         print(f'Parameters mutated to: {compute["params"]}')
     
-    if character == "s":
+    if character ==  app.window.key.S:
         # params.sort()
         params = compute["params"]
         params[1] += MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')                    
-    if character == "x":
+    if character ==  app.window.key.X:
         # params.sort()
         params = compute["params"]
         params[1] -= MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')    
-    if character == "d":
+    if character ==  app.window.key.D:
         # params.sort()
         params = compute["params"]
         params[2] += MUTATION_STEP
         compute["params"] = params
 
         print(f'Parameters mutated to: {compute["params"]}')                    
-    if character == "c":
+    if character == app.window.key.C:
         # params.sort()
         params = compute["params"]
         params[2] -= MUTATION_STEP
@@ -217,15 +205,15 @@ def on_character(character):
 
     #     print(f'Parameters mutated to: {compute["params"]}')                                 
 
-    if character == "C":
+    if character ==  app.window.key.C and mod == app.window.key.MOD_SHIFT:
         compute['params'] = np.array([0.2801, 0.3719, 0.4793 ], dtype=np.float32)        # print(f'Parameters mutated to: {compute["params"]}')
         print(f'Parameters resetted to: {compute["params"]}')           
-    if character == "p":
+    if character ==  app.window.key.P:
         MUTATION_STEP *= 2
         print(f'Mutation step changed to: {MUTATION_STEP}')                    
-    if character == "l":
+    if character ==  app.window.key.L:
         MUTATION_STEP /= 2
-        print(f'Mutation step changed to: {MUTATION_STEP}')                    
+        print(f'Mutation step changed to: {MUTATION_STEP}')                   
 
 w, h = WIDTH,HEIGHT
 Z = np.zeros((h, w, 4), dtype=np.float32)

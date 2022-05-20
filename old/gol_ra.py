@@ -127,7 +127,7 @@ def on_draw(dt):
     render.draw(gl.GL_TRIANGLE_STRIP)
 
 @window.event
-def on_character(character):
+def on_keypress(character):
     if character == "S":
         print('Character entered (chracter: %s)'% character)
         # Z = np.zeros((h, w, 4), dtype=np.float32)
